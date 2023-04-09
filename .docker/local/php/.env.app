@@ -1,3 +1,4 @@
+# APP用のenv
 APP_NAME=Laravel
 APP_ENV=local
 APP_KEY=base64:zcGC9RB0cplYgwAIAJ1vnNVHsHN+FXqTB3g6WtTfZTU=
@@ -8,18 +9,24 @@ LOG_CHANNEL=stack
 LOG_DEPRECATIONS_CHANNEL=null
 LOG_LEVEL=debug
 
-DB_CONNECTION=mysql
-DB_HOST=mysql
-DB_PORT=3306
-DB_DATABASE=sample_application
-DB_USERNAME=sail
-DB_PASSWORD=password
+DB_CONNECTION=pgsql
+# mysql or pgsql
+
+DB_HOST=postgresql
+# mysql or postgresql
+
+DB_PORT=5432
+# 3306 or 5432
+
+DB_DATABASE=sample
+DB_USERNAME=sample
+DB_PASSWORD=sample
 
 BROADCAST_DRIVER=log
-CACHE_DRIVER=file
-FILESYSTEM_DISK=local
-QUEUE_CONNECTION=sync
-SESSION_DRIVER=file
+CACHE_DRIVER=redis
+FILESYSTEM_DISK=s3
+QUEUE_CONNECTION=redis
+SESSION_DRIVER=redis
 SESSION_LIFETIME=120
 
 MEMCACHED_HOST=127.0.0.1
@@ -30,6 +37,8 @@ REDIS_PORT=6379
 
 MAIL_MAILER=smtp
 MAIL_HOST=mailpit
+# or mailhog
+
 MAIL_PORT=1025
 MAIL_USERNAME=null
 MAIL_PASSWORD=null
@@ -37,11 +46,17 @@ MAIL_ENCRYPTION=null
 MAIL_FROM_ADDRESS="hello@example.com"
 MAIL_FROM_NAME="${APP_NAME}"
 
-AWS_ACCESS_KEY_ID=
-AWS_SECRET_ACCESS_KEY=
+AWS_ACCESS_KEY_ID=samplesample
+AWS_SECRET_ACCESS_KEY=samplesample
 AWS_DEFAULT_REGION=us-east-1
-AWS_BUCKET=
-AWS_USE_PATH_STYLE_ENDPOINT=false
+AWS_BUCKET=sample-bucket
+AWS_USE_PATH_STYLE_ENDPOINT=true
+
+AWS_URL=http://localhost:4566
+# http://localhost:9000 or http://localhost:4566
+
+AWS_ENDPOINT=http://localstack:4566
+# http://minio:9000 or http://localstack:4566
 
 PUSHER_APP_ID=
 PUSHER_APP_KEY=
