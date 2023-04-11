@@ -151,7 +151,7 @@ services:
             - minio-bucket
 
     localstack:
-        image: localstack/localstack:1.4.0
+        image: localstack/localstack:2.0
         container_name: web-db-sample-localstack
         environment:
             SERVICES: s3
