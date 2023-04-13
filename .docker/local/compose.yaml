@@ -15,7 +15,14 @@ services:
                 source: postgresql
                 target: /var/lib/postgresql/data
         healthcheck:
-            test: [ "CMD", "pg_isready", "-U", "sample", "-d", "sample" ]
+            test: [
+                "CMD",
+                "pg_isready",
+                "-U",
+                "sample",
+                "-d",
+                "sample"
+            ]
             interval: 10s
             timeout: 5s
             retries: 5
@@ -36,7 +43,16 @@ services:
                 source: mysql
                 target: /var/lib/mysql
         healthcheck:
-            test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "sample", "-psample" ]
+            test: [
+                "CMD",
+                "mysqladmin",
+                "ping",
+                "-h",
+                "localhost",
+                "-u",
+                "sample",
+                "-psample"
+            ]
             interval: 10s
             timeout: 5s
             retries: 5
@@ -52,7 +68,11 @@ services:
                 source: redis
                 target: /data
         healthcheck:
-            test: [ "CMD", "redis-cli", "ping" ]
+            test: [
+                "CMD",
+                "redis-cli",
+                "ping"
+            ]
             interval: 1s
             timeout: 30s
             retries: 30
@@ -64,7 +84,13 @@ services:
             - 127.0.0.1:8025:8025
         container_name: web-db-sample-mailhog
         healthcheck:
-            test: [ "CMD", "ping", "-c", "3", "127.0.0.1" ]
+            test: [
+                "CMD",
+                "ping",
+                "-c",
+                "3",
+                "127.0.0.1"
+            ]
             interval: 1s
             timeout: 30s
             retries: 5
@@ -98,7 +124,12 @@ services:
             MINIO_ROOT_USER: samplesample
             MINIO_ROOT_PASSWORD: samplesample
         healthcheck:
-            test: [ "CMD", "curl", "-I", "http://localhost:9000/minio/health/live" ]
+            test: [
+                "CMD",
+                "curl",
+                "-I",
+                "http://localhost:9000/minio/health/live"
+            ]
             interval: 1s
             timeout: 30s
             retries: 30
@@ -120,12 +151,17 @@ services:
             - minio-bucket
 
     localstack:
-        image: localstack/localstack:1.4.0
+        image: localstack/localstack:2.0
         container_name: web-db-sample-localstack
         environment:
             SERVICES: s3
         healthcheck:
-            test: [ "CMD", "bash", "-c", "awslocal s3 ls" ]
+            test: [
+                "CMD",
+                "bash",
+                "-c",
+                "awslocal s3 ls"
+            ]
             interval: 5s
             timeout: 10s
             start_period: 10s

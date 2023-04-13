@@ -58,4 +58,4 @@ RUN groupadd -o -g ${GROUP_ID} ${USER_NAME} \
     && chown ${USER_NAME}:${USER_NAME} /var/www/html
 
 # マルチステージビルドにてcomposerを導入する
-COPY --from=composer:2.5.4 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.5 /usr/bin/composer /usr/bin/composer

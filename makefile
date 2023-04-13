@@ -6,7 +6,12 @@ USER_ID := $(shell id -u)
 GROUP_ID := $(shell id -g)
 PROJECT_NAME := webdb135
 
-COMPOSE_BASE_COMMAND := COMPOSE_PROJECT_NAME=$(PROJECT_NAME) USER_ID=$(USER_ID) GROUP_ID=$(GROUP_ID) USER_NAME=$(USER_NAME) docker compose -f ./.docker/local/compose.yaml
+COMPOSE_BASE_COMMAND := \
+  COMPOSE_PROJECT_NAME=$(PROJECT_NAME) \
+  USER_ID=$(USER_ID) \
+  GROUP_ID=$(GROUP_ID) \
+  USER_NAME=$(USER_NAME) \
+  docker compose -f ./.docker/local/compose.yaml
 
 .PHONY: help
 help: # @see https://postd.cc/auto-documented-makefile/
