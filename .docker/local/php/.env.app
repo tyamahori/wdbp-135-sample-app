@@ -37,7 +37,6 @@ REDIS_PORT=6379
 
 MAIL_MAILER=smtp
 MAIL_HOST=mailpit
-# or mailhog
 
 MAIL_PORT=1025
 MAIL_USERNAME=null

@@ -77,24 +77,6 @@ services:
             timeout: 30s
             retries: 30
 
-    mailhog:
-        image: mailhog/mailhog:v1.0.1
-        platform: linux/x86_64
-        ports:
-            - 127.0.0.1:8025:8025
-        container_name: web-db-sample-mailhog
-        healthcheck:
-            test: [
-                "CMD",
-                "ping",
-                "-c",
-                "3",
-                "127.0.0.1"
-            ]
-            interval: 1s
-            timeout: 30s
-            retries: 5
-
     mailpit:
         image: axllent/mailpit:v1.4.0
         ports:
@@ -213,8 +195,6 @@ services:
                 condition: service_healthy
             mailpit:
                 condition: service_healthy
-            mailhog:
-                condition: service_healthy
             minio:
                 condition: service_healthy
             localstack:
@@ -256,8 +236,6 @@ services:
             redis:
                 condition: service_healthy
             mailpit:
-                condition: service_healthy
-            mailhog:
                 condition: service_healthy
             minio:
                 condition: service_healthy
@@ -302,8 +280,6 @@ services:
             redis:
                 condition: service_healthy
             mailpit:
-                condition: service_healthy
-            mailhog:
                 condition: service_healthy
             minio:
                 condition: service_healthy
