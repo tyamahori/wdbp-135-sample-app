@@ -83,7 +83,13 @@ services:
             - 127.0.0.1:8025:8025
         container_name: web-db-sample-mailpit
         healthcheck:
-            test: [ "CMD", "ping", "-c", "3", "127.0.0.1" ]
+            test: [
+                "CMD",
+                "ping",
+                "-c",
+                "3",
+                "127.0.0.1"
+            ]
             interval: 1s
             timeout: 30s
             retries: 5
