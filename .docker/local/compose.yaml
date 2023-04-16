@@ -176,7 +176,7 @@ services:
         # .env.appをコンテナの環境変数に設定するようにしている。設定を変更する場合は、
         # 設定を変える場合は.env.appの内容を修正し、コンテナを再起動すること
         env_file: ./php/.env.app
-        extra_hosts: # Linux向け。rancher desktopだと動かない可能性がある
+        extra_hosts: # Linux向けの対応
             - host.docker.internal:host-gateway
         user: ${USER_ID}:${GROUP_ID}
         volumes:
