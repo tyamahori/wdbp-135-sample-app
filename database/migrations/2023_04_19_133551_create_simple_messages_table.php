@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('simple_messages', function (Blueprint $table) {
             $table->id();
+            $table->text('body');
             $table->timestamps();
         });
     }
