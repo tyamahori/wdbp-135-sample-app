@@ -13,7 +13,29 @@ class SimpleMessageController extends Controller
      */
     public function index()
     {
-        //
+//        return 'simple message index.';
+
+//        return response(
+//            content: 'simple message index.',
+//            headers: [
+//                'Content-Type' => 'text/plain',
+//            ]
+//        );
+
+//        return view('simple_message.index');
+
+//        return view('simple_message.index', [
+//            'messages' => [
+//                ['body' => 'This is first message.'],
+//                ['body' => '2nd message.'],
+//            ],
+//        ]);
+
+        $messages = SimpleMessage::latest()->get();
+
+        return view('simple_message.index', [
+            'messages' => $messages,
+        ]);
     }
 
     /**
@@ -21,7 +43,7 @@ class SimpleMessageController extends Controller
      */
     public function create()
     {
-        //
+        return view('simple_message.create');
     }
 
     /**
@@ -29,7 +51,12 @@ class SimpleMessageController extends Controller
      */
     public function store(StoreSimpleMessageRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $message = SimpleMessage::create($validated);
+
+        return redirect(route('message.show', [
+            'message' => $message->id,
+        ]));
     }
 
     /**
