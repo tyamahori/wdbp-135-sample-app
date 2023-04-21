@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Features\UiVer2;
 use App\Http\Requests\StoreSimpleMessageRequest;
 use App\Http\Requests\UpdateSimpleMessageRequest;
 use App\Mail\SimpleMessageCreated;
 use App\Models\SimpleMessage;
 use Illuminate\Support\Facades\Mail;
+use Laravel\Pennant\Feature;
 
 class SimpleMessageController extends Controller
 {
@@ -45,7 +47,10 @@ class SimpleMessageController extends Controller
      */
     public function create()
     {
-        return view('simple_message.create');
+//        return view('simple_message.create');
+        return Feature::active(UiVer2::class) ?
+            view('simple_message.create') :
+            view('simple_message.new_ui_test.create');
     }
 
     /**
