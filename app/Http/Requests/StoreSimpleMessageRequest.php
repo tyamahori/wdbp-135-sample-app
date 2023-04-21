@@ -26,6 +26,9 @@ class StoreSimpleMessageRequest extends FormRequest
                 'required',
                 'string',
             ],
+            'image' => [
+                'image',
+            ],
         ];
     }
 }

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSimpleMessageRequest;
 use App\Http\Requests\UpdateSimpleMessageRequest;
+use App\Mail\SimpleMessageCreated;
 use App\Models\SimpleMessage;
+use Illuminate\Support\Facades\Mail;
 
 class SimpleMessageController extends Controller
 {
@@ -52,11 +54,17 @@ class SimpleMessageController extends Controller
     public function store(StoreSimpleMessageRequest $request)
     {
         $validated = $request->validated();
-        $message = SimpleMessage::create($validated);
+        $path = $validated['image']->store('uploads', 'public');
+//        $message = SimpleMessage::create($validated);
+        $message = SimpleMessage::create(array_merge($validated, ['image' => $path]));
 
-        return redirect(route('message.show', [
-            'message' => $message->id,
-        ]));
+        Mail::to('notify+laravel-app@inbaa.dev')
+            ->send(new SimpleMessageCreated($message));
+
+//        Notification::route('slack', '発行されたWebhook URL')
+//            ->notify(new SimpleMessageCreatedToSlack($message));
+
+        return redirect(route('message.show', ['message' => $message->id]));
     }
 
     /**
