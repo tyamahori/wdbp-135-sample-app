@@ -17,6 +17,28 @@ COMPOSE_BASE_COMMAND := \
 help: # @see https://postd.cc/auto-documented-makefile/
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
+.PHONY: init
+init: delete-all rm-vendor ## プロジェクトのすべてを削除してから、セットアップする
+	$(COMPOSE_BASE_COMMAND) up -d
+	$(COMPOSE_BASE_COMMAND) run --rm minio-bucket
+	$(COMPOSE_BASE_COMMAND) exec -it php-app composer install
+	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan optimize:clear
+	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan migrate:refresh --seed
+
+.PHONY: up
+up: down ## docker compose up
+	$(COMPOSE_BASE_COMMAND) up -d
+	$(COMPOSE_BASE_COMMAND) ps -a
+
+.PHONY: down
+down: ## docker compose down
+	$(COMPOSE_BASE_COMMAND) down
+
+.PHONY: clean-up
+clean-up: delete-volume ## volumeを削除して docker compose up
+	$(COMPOSE_BASE_COMMAND) up -d
+	$(COMPOSE_BASE_COMMAND) ps -a
+
 .PHONY: delete-all
 delete-all: ## docker compose down -v --rmi all --remove-orphans
 	$(COMPOSE_BASE_COMMAND) down -v --rmi all --remove-orphans
@@ -28,28 +50,6 @@ delete-volume: ## docker compose down -v
 .PHONY: rm-vendor
 rm-vendor: ## rm -rf ./vendor
 	rm -rf ./vendor
-
-.PHONY: init
-init: delete-all rm-vendor ## プロジェクトのすべてを削除してから、セットアップする
-	$(COMPOSE_BASE_COMMAND) up -d
-	$(COMPOSE_BASE_COMMAND) run --rm minio-bucket
-	$(COMPOSE_BASE_COMMAND) exec -it php-app composer install
-	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan optimize:clear
-	$(COMPOSE_BASE_COMMAND) exec -it php-app php artisan migrate:refresh --seed
-
-.PHONY: clean-up
-clean-up: delete-volume ## volumeを削除して docker compose up
-	$(COMPOSE_BASE_COMMAND) up -d
-	$(COMPOSE_BASE_COMMAND) ps -a
-
-.PHONY: up
-up: down ## docker compose up
-	$(COMPOSE_BASE_COMMAND) up -d
-	$(COMPOSE_BASE_COMMAND) ps -a
-
-.PHONY: down
-down: ## docker compose down
-	$(COMPOSE_BASE_COMMAND) down
 
 .PHONY: ps
 ps: ## docker compose ps
