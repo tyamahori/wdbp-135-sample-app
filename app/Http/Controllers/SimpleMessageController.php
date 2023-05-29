@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Features\UiVer2;
 use App\Http\Requests\StoreSimpleMessageRequest;
 use App\Http\Requests\UpdateSimpleMessageRequest;
+use App\Mail\SimpleMessageCreated;
 use App\Models\SimpleMessage;
+use Illuminate\Support\Facades\Mail;
+use Laravel\Pennant\Feature;
 
 class SimpleMessageController extends Controller
 {
@@ -43,7 +47,10 @@ class SimpleMessageController extends Controller
      */
     public function create()
     {
-        return view('simple_message.create');
+//        return view('simple_message.create');
+        return Feature::active(UiVer2::class) ?
+            view('simple_message.create') :
+            view('simple_message.new_ui_test.create');
     }
 
     /**
@@ -52,11 +59,17 @@ class SimpleMessageController extends Controller
     public function store(StoreSimpleMessageRequest $request)
     {
         $validated = $request->validated();
-        $message = SimpleMessage::create($validated);
+        $path = $validated['image']->store('uploads', 'public');
+//        $message = SimpleMessage::create($validated);
+        $message = SimpleMessage::create(array_merge($validated, ['image' => $path]));
 
-        return redirect(route('message.show', [
-            'message' => $message->id,
-        ]));
+        Mail::to('notify+laravel-app@inbaa.dev')
+            ->send(new SimpleMessageCreated($message));
+
+//        Notification::route('slack', '発行されたWebhook URL')
+//            ->notify(new SimpleMessageCreatedToSlack($message));
+
+        return redirect(route('message.show', ['message' => $message->id]));
     }
 
     /**
